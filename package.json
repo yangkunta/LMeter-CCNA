@@ -1,0 +1,32 @@
+{
+  "name": "learnmentor-ccna",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "LearnMentorCCNA - AI 驅動的 CCNA 認證教學專家系統",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy:dev": "vite build && wrangler pages deploy",
+    "deploy": "npm run deploy:dev",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "test": "echo \"No tests yet\" && exit 0",
+    "db:create": "wrangler d1 create ccna_mt_db",
+    "db:migrate": "wrangler d1 execute ccna_mt_db --file=./schema.sql",
+    "db:migrate:local": "wrangler d1 execute ccna_mt_db --file=./schema.sql --local",
+    "import:generate": "npx tsx scripts/import-questions.ts",
+    "import:local": "npm run import:generate && wrangler d1 execute ccna_mt_db --file=./import-data.sql --local"
+  },
+  "dependencies": {
+    "hono": "^4.12.25"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.40.0",
+    "@cloudflare/workers-types": "^4.20250530.0",
+    "@types/node": "^25.9.2",
+    "sqlite3": "^6.0.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "wrangler": "^4.4.0"
+  }
+}

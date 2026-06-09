@@ -1,0 +1,8 @@
+node_modules/
+.wrangler/
+dist/
+vectors.ndjson
+questions.json
+questions_utf8.json
+temp.js
+*.sqlite

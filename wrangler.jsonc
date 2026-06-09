@@ -1,0 +1,39 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "learnmentor-ccna",
+  "compatibility_date": "2026-04-11",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "src/index.tsx",
+
+  // ─── Cloudflare D1 (主資料庫) ─────────────────────────────────
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ccna_mt_db",
+      "database_id": "333dd1f8-f421-4fe1-852b-868c46e9bc08"
+    }
+  ],
+
+  // ─── Cloudflare Vectorize (向量搜尋) ──────────────────────────
+  "vectorize": [
+    {
+      "binding": "VECTOR_INDEX",
+      "index_name": "ccna_mt_vectors"
+    }
+  ],
+
+  // ─── 環境變數 (非機密) ────────────────────────────────────────
+  "vars": {
+    "FIREBASE_PROJECT_ID": "learnmetor",
+    "FIREBASE_DATABASE_ID": "(default)",
+    "FIREBASE_WEB_API_KEY": "TODO_從_Firebase_Console_取得",
+    "CLERK_PUBLISHABLE_KEY": "pk_test_bm9ibGUtY3Jhd2RhZC05NS5jbGVyay5hY2NvdW50cy5kZXYk",
+    "AZURE_OPENAI_BASE_URL": "https://nec-ai-foundry-eus2.services.ai.azure.com/openai/v1",
+    "AZURE_OPENAI_MODEL": "shan-lin"
+  }
+
+  // ─── 機密環境變數 (用 wrangler secret put 設定) ────────────────
+  // 以下不寫在設定檔中，請用 CLI 設定：
+  //   wrangler secret put GEMINI_API_KEY
+  //   wrangler secret put AZURE_OPENAI_API_KEY
+}
