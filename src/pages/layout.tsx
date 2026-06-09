@@ -141,6 +141,10 @@ export function Layout({ title, clerkKey, children }: LayoutProps) {
               await window.Clerk.load();
               const userBtnEl = document.getElementById('user-button');
               if (window.Clerk.user) {
+                const u = window.Clerk.user;
+                const name = u.fullName || u.username || '';
+                const email = u.primaryEmailAddress ? u.primaryEmailAddress.emailAddress : '';
+                userBtnEl.title = name + (name && email ? ' - ' : '') + email;
                 window.Clerk.mountUserButton(userBtnEl);
               } else {
                 userBtnEl.innerHTML = '<button onclick="window.Clerk.openSignIn()" style="background:var(--accent-blue);color:#fff;border:none;padding:0.4rem 1rem;border-radius:6px;cursor:pointer;">登入</button>';
