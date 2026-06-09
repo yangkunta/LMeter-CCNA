@@ -118,15 +118,36 @@ export function Layout({ title, clerkKey, children }: LayoutProps) {
           <a href="/" class="nav-brand">CCNA-MT</a>
           <div class="nav-links">
             <a href="/portal">Portal</a>
-            <a href="/practice">刷題</a>
-            <a href="/exam">模擬考</a>
+            <a href="#" onclick="alert('還在規畫中'); return false;">刷題</a>
+            <a href="#" onclick="alert('還在規畫中'); return false;">模擬考</a>
             <a href="/tutor">AI 導師</a>
-            <a href="/dashboard">儀表板</a>
+            <a href="#" onclick="alert('還在規畫中'); return false;">儀表板</a>
           </div>
+          <div id="user-button"></div>
         </nav>
         <main class="container">
           {children}
         </main>
+        {clerkKey && (
+          <script dangerouslySetInnerHTML={{ __html: `
+            const clerkPubKey = '${clerkKey}';
+            const script = document.createElement('script');
+            script.setAttribute('data-clerk-publishable-key', clerkPubKey);
+            script.async = true;
+            script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+            script.crossOrigin = 'anonymous';
+            script.addEventListener('load', async function () {
+              await window.Clerk.load();
+              const userBtnEl = document.getElementById('user-button');
+              if (window.Clerk.user) {
+                window.Clerk.mountUserButton(userBtnEl);
+              } else {
+                userBtnEl.innerHTML = '<button onclick="window.Clerk.openSignIn()" style="background:var(--accent-blue);color:#fff;border:none;padding:0.4rem 1rem;border-radius:6px;cursor:pointer;">登入</button>';
+              }
+            });
+            document.body.appendChild(script);
+          `}} />
+        )}
       </body>
     </html>
   );

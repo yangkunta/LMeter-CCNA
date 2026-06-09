@@ -155,12 +155,13 @@ export function renderTutor(clerkKey: string) {
   <a href="/" class="nav-brand">🎓 LearnMentorCCNA</a>
   <div class="nav-links">
     <a href="/portal">Portal</a>
-    <a href="/practice">刷題</a>
-    <a href="/exam">模擬考</a>
+    <a href="#" onclick="alert('還在規畫中'); return false;">刷題</a>
+    <a href="#" onclick="alert('還在規畫中'); return false;">模擬考</a>
     <a href="/tutor" class="active">AI 導師</a>
-    <a href="/dashboard">儀表板</a>
+    <a href="#" onclick="alert('還在規畫中'); return false;">儀表板</a>
   </div>
   <div class="nav-right">
+    <div id="user-button"></div>
     <!-- 字體大小切換 -->
     <div class="theme-switcher" title="字體大小">
       <button class="theme-btn active" id="fontSmall" onclick="setFont('small')" title="小（預設）">A</button>
@@ -696,7 +697,28 @@ function makeListClickable(bubble) {
     }
   });
 }
-\n</script>
+
+</script>
+${clerkKey ? `
+  <script>
+    const clerkPubKey = '${clerkKey}';
+    const s = document.createElement('script');
+    s.setAttribute('data-clerk-publishable-key', clerkPubKey);
+    s.async = true;
+    s.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+    s.crossOrigin = 'anonymous';
+    s.addEventListener('load', async function () {
+      await window.Clerk.load();
+      const userBtnEl = document.getElementById('user-button');
+      if (window.Clerk.user) {
+        window.Clerk.mountUserButton(userBtnEl);
+      } else {
+        userBtnEl.innerHTML = '<button onclick="window.Clerk.openSignIn()" style="background:var(--accent);color:#fff;border:none;padding:0.3rem 0.8rem;border-radius:6px;cursor:pointer;">登入</button>';
+      }
+    });
+    document.body.appendChild(s);
+  </script>
+` : ''}
 </body>
 </html>`;
   return html;
