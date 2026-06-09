@@ -4,9 +4,9 @@
   "compatibility_date": "2026-04-11",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/index.tsx",
-  "routes": [
-    { "pattern": "lmentor-ccna.works", "custom_domain": true }
-  ],
+  // "routes": [
+  //   { "pattern": "lmentor-ccna.works", "custom_domain": true }
+  // ],
 
   // ─── Cloudflare D1 (主資料庫) ─────────────────────────────────
   "d1_databases": [
