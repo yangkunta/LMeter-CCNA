@@ -700,19 +700,25 @@ function makeListClickable(bubble) {
 
 </script>
 ${clerkKey ? `
-  <script async crossorigin="anonymous" data-clerk-publishable-key="${clerkKey}" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
   <script>
-    window.addEventListener('load', async function() {
-      if(window.Clerk) {
-        await window.Clerk.load();
-        const userBtnEl = document.getElementById('user-button');
-        if(window.Clerk.user) {
-          window.Clerk.mountUserButton(userBtnEl);
-        } else {
-          userBtnEl.innerHTML = '<button onclick="window.Clerk.openSignIn()" style="background:var(--accent);color:#fff;border:none;padding:0.3rem 0.8rem;border-radius:6px;cursor:pointer;">登入</button>';
-        }
+    const clerkPubKey = '${clerkKey}';
+    const frontendApi = atob(clerkPubKey.split('_')[2]).replace('$', '');
+    const scriptUrl = 'https://' + frontendApi + '/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+    const s = document.createElement('script');
+    s.setAttribute('data-clerk-publishable-key', clerkPubKey);
+    s.async = true;
+    s.src = scriptUrl;
+    s.crossOrigin = 'anonymous';
+    s.addEventListener('load', async function () {
+      await window.Clerk.load();
+      const userBtnEl = document.getElementById('user-button');
+      if (window.Clerk.user) {
+        window.Clerk.mountUserButton(userBtnEl);
+      } else {
+        userBtnEl.innerHTML = '<button onclick="window.Clerk.openSignIn()" style="background:var(--accent);color:#fff;border:none;padding:0.3rem 0.8rem;border-radius:6px;cursor:pointer;">登入</button>';
       }
     });
+    document.body.appendChild(s);
   </script>` : ''}
 </body>
 </html>`;

@@ -134,7 +134,8 @@ export function Layout({ title, clerkKey, children }: LayoutProps) {
             const script = document.createElement('script');
             script.setAttribute('data-clerk-publishable-key', clerkPubKey);
             script.async = true;
-            script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+            const frontendApi = atob(clerkPubKey.split('_')[2]).replace('$', '');
+            script.src = 'https://' + frontendApi + '/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
             script.crossOrigin = 'anonymous';
             script.addEventListener('load', async function () {
               await window.Clerk.load();
